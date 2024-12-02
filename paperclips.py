@@ -4,8 +4,8 @@ import random
 import math
 from tkinter import messagebox 
 
-global paperClips, robots, cash, pcPer, resources, price
-paperClips, robots, cash, pcPer, resources, price = 0,0,500,1,0,10
+global paperClips, robots, cash, pcPer, resources, price, pryce, pyrce2, pryce3
+paperClips, robots, cash, pcPer, resources, price, pryce, pryce2, pryce3 = 0,0,500,1,0,10, 150, 50, 500
 
 fontSize=13
 
@@ -19,21 +19,63 @@ def robotsfunc():
 
 
 def open_second_window(): 
-    global robots, cash, pcPer, resources
+    global robots, cash, pcPer, resources,pryce,pryce2
     upgradeui = tk.Toplevel(root) 
     upgradeui.title("Upgrade GUI") 
-    upgradeui.geometry("300x200") 
+    upgradeui.geometry("350x200") 
     upgradeui.configure(background="#1f1f1f")
     upgradeui.resizable(False,False)
 
-    labelbuyrobot=tk.Label(upgradeui, text="Buy Robot $150: ", font= ("helvetica", fontSize), bg="#1f1f1f", fg="white", justify="left")
+    def buyrobots():
+        global cash, robots, pryce
+        if cash >= pryce:
+            cash-=pryce
+            robots+=1
+            pryce+=50
+        else:
+            messagebox.showerror("Warning", "Not enough Cash available")
+        updatestats()
+        labelbuyrobot.config(text=f"Buy Robot ${pryce}")
+        
+
+    def eff():
+        global pcPer, cash,pryce2
+        if cash >= pryce2:
+            cash-=pryce2
+            pcPer+=1
+            pryce2+=pryce2*1.5
+        else:
+            messagebox.showerror("Warning", "Not enough Cash available")
+        updatestats()
+        labeleff.config(text=f"Increase Efficiency ${int(pryce2)}")
+       
+    def priceinc():
+        global price, cash,pryce3
+        if cash >= pryce3:
+            cash-=pryce3
+            price+=10
+            pryce3=pryce3*2
+        else:
+            messagebox.showerror("Warning", "Not enough Cash available")
+        updatestats()
+        labelprice.config(text=f"Increase Price ${int(pryce3)}")
+
+    labelbuyrobot=tk.Label(upgradeui, text=f"Buy Robot ${pryce}: ", font= ("helvetica", fontSize), bg="#1f1f1f", fg="white", justify="left")
     buyrobot=tk.Button(upgradeui, text="Purchase", font= ("helvetica", fontSize), bg="#2f2f2f", fg="white", width=10,relief="flat", command=buyrobots)
 
+    labeleff=tk.Label(upgradeui, text=f"Increase Efficiency ${int(pryce2)}: ", font= ("helvetica", fontSize), bg="#1f1f1f", fg="white", justify="left")
+    buyeff=tk.Button(upgradeui, text="Purchase", font= ("helvetica", fontSize), bg="#2f2f2f", fg="white", width=10,relief="flat", command=eff)
 
+    labelprice=tk.Label(upgradeui, text=f"Increase Price ${int(pryce3)}: ", font= ("helvetica", fontSize), bg="#1f1f1f", fg="white", justify="left")
+    incprice=tk.Button(upgradeui, text="Purchase", font= ("helvetica", fontSize), bg="#2f2f2f", fg="white", width=10,relief="flat", command=priceinc)
 
     widgets=[
         (labelbuyrobot, 0, 0),
-        (buyrobot, 0, 1)
+        (buyrobot, 0, 1),
+        (labeleff, 1, 0),
+        (buyeff, 1, 1),
+        (labelprice, 2, 0),
+        (incprice, 2, 1)
         ]
 
 
@@ -44,18 +86,18 @@ def open_second_window():
 def updatestats():
     global paperClips, robots, cash, pcPer, resources, price
     stats=[
-        (displaypc, paperClips, ""),
-        (displayrobots, robots, ""),
-        (displaycash, cash, "$"),
-        (displaypcper, pcPer, ""),
-        (displayres, resources, ""),
-        (displayprice, price, "$")
+        (displaypc, paperClips, "", ""),
+        (displayrobots, robots, "", ""),
+        (displaycash, cash, "$", ""),
+        (displaypcper, pcPer*100, "", "%"),
+        (displayres, resources, "", ""),
+        (displayprice, price, "$", "")
         ]
-
-    for widget, statistic, extra in stats:
+    print(pcPer)
+    for widget, statistic, extra, extra2 in stats:
         widget.configure(state="normal")
         widget.delete(0, tk.END)
-        widget.insert(0, extra + str(statistic))
+        widget.insert(0, extra + str(statistic) + extra2)
         widget.configure(state="disabled")
 
 def sell():
@@ -70,7 +112,7 @@ def sell():
     
 def buyresource():
     global cash, resources
-    if cash >= 1:
+    if cash >= 100:
         cash-=100
         resources+=10
     else:
@@ -86,26 +128,18 @@ def makepaperclip():
         messagebox.showerror("Warning", "No Resources available")
     updatestats()
     
-def buyrobots():
-    global cash, robots
-    if cash >= 150:
-        cash-=150
-        robots+=1
-    else:
-        messagebox.showerror("Warning", "Not enough Cash available")
-    updatestats()
 
 def buyrobot():
     global cash, pcPer
     if cash >= 20:
         cash-=20
         pcPer+=1
+        root.update()
     else:
         messagebox.showerror("Warning", "No Cash available")
     updatestats()
 
-def priceinc():
-    pass
+
 
 
 def createlabel(parent, text):
