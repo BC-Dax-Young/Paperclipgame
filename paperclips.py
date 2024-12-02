@@ -5,7 +5,17 @@ import math
 from tkinter import messagebox 
 
 global paperClips, robots, cash, pcPer, resources, price
-paperClips, robots, cash, pcPer, resources, price = 0,0,500,0,0,10
+paperClips, robots, cash, pcPer, resources, price = 0,0,500,1,0,10
+
+fontSize=13
+
+def robotsfunc():
+    global resources, paperClips, pcPer, robots
+    if resources >= 1*robots:
+        resources-=1*robots
+        paperClips+=10*pcPer*robots
+    updatestats()
+    root.after(1000, robotsfunc)
 
 
 def open_second_window(): 
@@ -16,8 +26,8 @@ def open_second_window():
     upgradeui.configure(background="#1f1f1f")
     upgradeui.resizable(False,False)
 
-    labelbuyrobot=tk.Label(upgradeui, text="Buy Robot $150: ", font= "helvetica", bg="#1f1f1f", fg="white", justify="left")
-    buyrobot=tk.Button(upgradeui, text="Purchase", font= "helvetica", bg="#2f2f2f", fg="white", width=10,relief="flat", command=buyrobots)
+    labelbuyrobot=tk.Label(upgradeui, text="Buy Robot $150: ", font= ("helvetica", fontSize), bg="#1f1f1f", fg="white", justify="left")
+    buyrobot=tk.Button(upgradeui, text="Purchase", font= ("helvetica", fontSize), bg="#2f2f2f", fg="white", width=10,relief="flat", command=buyrobots)
 
 
 
@@ -99,7 +109,7 @@ def priceinc():
 
 
 def createlabel(parent, text):
-    return tk.Label(parent, text=text, font="Helvetica", bg="#2f2f2f", fg="white", relief="flat")
+    return tk.Label(parent, text=text, font=("helvetica", fontSize), bg="#2f2f2f", fg="white", relief="flat")
 
 root=tk.Tk()
 root.title("Paper Clip Game")
@@ -111,40 +121,40 @@ canvas.grid(columnspan=100, rowspan=100)
 canvas.create_rectangle(350, 400, 700, 0, fill="#1f1f1f", outline="")
 
 labelcurrentpc=createlabel(root, "Current Paper Clips: ")
-displaypc=tk.Entry(root, relief="flat", font= "helvetica", bg="#1f1f1f", fg="white", width=12, disabledbackground="#1f1f1f", disabledforeground="white")
+displaypc=tk.Entry(root, relief="flat", font= ("helvetica", fontSize), bg="#1f1f1f", fg="white", width=12, disabledbackground="#1f1f1f", disabledforeground="white")
 displaypc.configure(state="disabled")
 
 labelrobots=createlabel(root, "Current Robots: ")
-displayrobots=tk.Entry(root, relief="flat", font= "helvetica", bg="#1f1f1f", fg="white", width=12, disabledbackground="#1f1f1f", disabledforeground="white")
+displayrobots=tk.Entry(root, relief="flat", font= ("helvetica", fontSize), bg="#1f1f1f", fg="white", width=12, disabledbackground="#1f1f1f", disabledforeground="white")
 displayrobots.configure(state="disabled")
 
 labelcash=createlabel(root, "Current Cash: ")
-displaycash=tk.Entry(root, relief="flat", font= "helvetica", bg="#1f1f1f", fg="white", width=12, disabledbackground="#1f1f1f", disabledforeground="white")
+displaycash=tk.Entry(root, relief="flat", font= ("helvetica", fontSize), bg="#1f1f1f", fg="white", width=12, disabledbackground="#1f1f1f", disabledforeground="white")
 displaycash.configure(state="disabled")
 
 labelpcper=createlabel(root, "Current Efficiency: ")
-displaypcper=tk.Entry(root, relief="flat", font= "helvetica", bg="#1f1f1f", fg="white", width=12, disabledbackground="#1f1f1f", disabledforeground="white") 
+displaypcper=tk.Entry(root, relief="flat", font= ("helvetica", fontSize), bg="#1f1f1f", fg="white", width=12, disabledbackground="#1f1f1f", disabledforeground="white") 
 displaypcper.configure(state="disabled")
 
 labelres=createlabel(root, "Current Resources: ")
-displayres=tk.Entry(root, relief="flat", font= "helvetica", bg="#1f1f1f", fg="white", width=12, disabledbackground="#1f1f1f", disabledforeground="white") 
+displayres=tk.Entry(root, relief="flat", font= ("helvetica", fontSize), bg="#1f1f1f", fg="white", width=12, disabledbackground="#1f1f1f", disabledforeground="white") 
 displayres.configure(state="disabled")
 
 labelprice=createlabel(root, "Current Price: ")
-displayprice=tk.Entry(root, relief="flat", font= "helvetica", bg="#1f1f1f", fg="white", width=12, disabledbackground="#1f1f1f", disabledforeground="white") 
+displayprice=tk.Entry(root, relief="flat", font= ("helvetica", fontSize), bg="#1f1f1f", fg="white", width=12, disabledbackground="#1f1f1f", disabledforeground="white") 
 displayprice.configure(state="disabled")
 
-labelsell=tk.Label(root, text="Sell Paper Clips: ", font= "helvetica", bg="#1f1f1f", fg="white", justify="left")
-sellpc=tk.Button(root, text="Sell", font= "helvetica", bg="#2f2f2f", fg="white", width=10, relief="flat", command=sell)
+labelsell=tk.Label(root, text="Sell Paper Clips: ", font= ("helvetica", fontSize), bg="#1f1f1f", fg="white", justify="left")
+sellpc=tk.Button(root, text="Sell", font= ("helvetica", fontSize), bg="#2f2f2f", fg="white", width=10, relief="flat", command=sell)
 
-labelupg=tk.Label(root, text="Buy Upgrades: ", font= "helvetica", bg="#1f1f1f", fg="white", justify="left")
-openupg=tk.Button(root, text="Upgrade", font= "helvetica", bg="#2f2f2f", fg="white", width=10,relief="flat", command=open_second_window)
+labelupg=tk.Label(root, text="Buy Upgrades: ", font= ("helvetica", fontSize), bg="#1f1f1f", fg="white", justify="left")
+openupg=tk.Button(root, text="Upgrade", font= ("helvetica", fontSize), bg="#2f2f2f", fg="white", width=10,relief="flat", command=open_second_window)
 
-labelmake=tk.Label(root, text="Make Paper Clip: ", font= "helvetica", bg="#1f1f1f", fg="white", justify="left")
-makepc=tk.Button(root, text="Construct", font= "helvetica", bg="#2f2f2f", fg="white", width=10,relief="flat", command=makepaperclip)
+labelmake=tk.Label(root, text="Make Paper Clip: ", font= ("helvetica", fontSize), bg="#1f1f1f", fg="white", justify="left")
+makepc=tk.Button(root, text="Construct", font= ("helvetica", fontSize), bg="#2f2f2f", fg="white", width=10,relief="flat", command=makepaperclip)
 
-labelbuy=tk.Label(root, text="Buy Resources: ", font= "helvetica", bg="#1f1f1f", fg="white", justify="left")
-buyres=tk.Button(root, text="Purchase", font= "helvetica", bg="#2f2f2f", fg="white", width=10,relief="flat", command=buyresource)
+labelbuy=tk.Label(root, text="Buy Resources: ", font= ("helvetica", fontSize), bg="#1f1f1f", fg="white", justify="left")
+buyres=tk.Button(root, text="Purchase", font= ("helvetica", fontSize), bg="#2f2f2f", fg="white", width=10,relief="flat", command=buyresource)
 
 spacer=tk.Label(root, text="", bg="#2f2f2f")
 
@@ -177,4 +187,5 @@ for widget, row, column, in widgets:
 spacer.grid(row=0, column=2, padx=30, pady=10)
 root.grid_rowconfigure(1, minsize=20)
 updatestats()
+root.after(1000, robotsfunc)
 root.mainloop()
